@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./base/OwnerManager.sol";
+import "./base/IsolatedOwnerManager.sol";
 import "./common/SignatureDecoder.sol";
 import "./interfaces/ISignatureValidator.sol";
 import "./external/SafeMath.sol";
@@ -11,7 +11,7 @@ import "./external/SafeMath.sol";
  * @author Stefan George - @Georgi87
  * @author Richard Meissner - @rmeissner
  */
-abstract contract CheckSignatures is OwnerManager, SignatureDecoder {
+abstract contract CheckSignatures is IsolatedOwnerManager, SignatureDecoder {
     using SafeMath for uint256;
 
     event ApproveHash(bytes32 indexed approvedHash, address indexed owner);
@@ -19,12 +19,12 @@ abstract contract CheckSignatures is OwnerManager, SignatureDecoder {
     // Mapping to keep track of all hashes (message or transaction) that have been approved by ANY owners
     mapping(address => mapping(bytes32 => uint256)) public approvedHashes;
 
-    // This constructor ensures that this contract can only be used as a singleton for Proxy contracts
+    // This constructor ensures that this contract can only be used as a singleton for proxy contracts
     constructor() {
         /**
-         * By setting the threshold it is not possible to call setup anymore,
-         * so we create a Safe with 0 owners and threshold 1.
-         * This is an unusable Safe, perfect for the singleton
+         * By setting the threshold it is not possible to call setupOwners anymore,
+         * so we create a contract with 0 owners and threshold 1.
+         * This is an unusable contract, perfect for the singleton
          */
         threshold = 1;
     }
