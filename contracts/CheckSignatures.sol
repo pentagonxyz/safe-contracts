@@ -30,12 +30,12 @@ abstract contract CheckSignatures is IsolatedOwnerManager, SignatureDecoder {
      * @param signatures Signature data that should be verified.
      *                   Can be packed ECDSA signature ({bytes32 r}{bytes32 s}{uint8 v}), contract signature (EIP-1271) or approved hash.
      */
-    function checkSignatures(bytes32 dataHash, bytes memory data, bytes memory signatures) public view {
+    function checkSignatures(bytes32 dataHash, bytes memory signatures) public view {
         // Load threshold to avoid multiple storage loads
         uint256 _threshold = threshold;
         // Check that a threshold is set
         require(_threshold > 0, "GS001");
-        checkNSignatures(dataHash, data, signatures, _threshold);
+        checkNSignatures(dataHash, signatures, _threshold);
     }
 
     /**
@@ -47,7 +47,7 @@ abstract contract CheckSignatures is IsolatedOwnerManager, SignatureDecoder {
      *                   Can be packed ECDSA signature ({bytes32 r}{bytes32 s}{uint8 v}), contract signature (EIP-1271) or approved hash.
      * @param requiredSignatures Amount of required valid signatures.
      */
-    function checkNSignatures(bytes32 dataHash, bytes memory data, bytes memory signatures, uint256 requiredSignatures) public view {
+    function checkNSignatures(bytes32 dataHash, bytes memory signatures, uint256 requiredSignatures) public view {
         // Check that the provided signature data is not too short
         require(signatures.length >= requiredSignatures.mul(65), "GS020");
         // There cannot be an owner with address 0.
