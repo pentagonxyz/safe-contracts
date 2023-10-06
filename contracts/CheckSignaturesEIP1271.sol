@@ -7,7 +7,7 @@ import "./interfaces/ISignatureValidator.sol";
 import "./external/SafeMath.sol";
 
 /**
- * @title CheckSignaturesEIP1271 - An abstract contract with only `checkSignatures` isolated from `Safe` (forked from `ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`) with non-legacy EIP-1271 support (forked from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839`).
+ * @title CheckSignaturesEIP1271 - An abstract contract with only `checkSignatures` isolated from `Safe` (forked from `ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`) with non-legacy EIP-1271 support (copied from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839`).
  * @author Stefan George - @Georgi87
  * @author Richard Meissner - @rmeissner
  */
