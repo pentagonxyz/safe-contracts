@@ -90,7 +90,7 @@ abstract contract CheckSignaturesEIP1271 is IsolatedOwnerManager, SignatureDecod
                     contractSignature := add(add(signatures, s), 0x20)
                 }
                 /* solhint-enable no-inline-assembly */
-                // NOTE: The following line is copied from the commit `1cfa95710057e33832600e6b9ad5ececca8f7839` to `safe-global/safe-contracts`; in the `safe-contracts` commit from which this repository has been forked (`ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`), a legacy implementation of EIP-1271 is used
+                // NOTE: The following line is copied from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839` to `safe-global/safe-contracts`; this differs from the `safe-contracts` commit from which this repository has been forked (`ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`), in which a legacy implementation of EIP-1271 is used
                 require(ISignatureValidator(currentOwner).isValidSignature(dataHash, contractSignature) == EIP1271_MAGIC_VALUE, "GS024");
             } else if (v > 30) {
                 // If v > 30 then default va (27,28) has been adjusted for eth_sign flow
