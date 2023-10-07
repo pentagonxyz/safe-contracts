@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./base/IsolatedOwnerManager.sol";
 import "./common/SignatureDecoder.sol";
-import "./interfaces/ISignatureValidator.sol";
+import "./interfaces/IStandardSignatureValidator.sol";
 import "./external/SafeMath.sol";
 
 /**
@@ -11,12 +11,8 @@ import "./external/SafeMath.sol";
  * @author Stefan George - @Georgi87
  * @author Richard Meissner - @rmeissner
  */
-abstract contract CheckSignaturesEIP1271 is IsolatedOwnerManager, SignatureDecoder {
+abstract contract CheckSignaturesEIP1271 is IsolatedOwnerManager, SignatureDecoder, IStandardSignatureValidatorConstants {
     using SafeMath for uint256;
-
-    // bytes4(keccak256("isValidSignature(bytes32,bytes)")
-    // NOTE: The following line is copied from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839` to `safe-global/safe-contracts`; this differs from the `safe-contracts` commit from which this repository has been forked (`ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`), in which a legacy implementation of EIP-1271 is used
-    bytes4 internal constant EIP1271_MAGIC_VALUE = 0x1626ba7e;
 
     // This constructor ensures that this contract can only be used as a singleton for proxy contracts
     constructor() {
@@ -95,7 +91,7 @@ abstract contract CheckSignaturesEIP1271 is IsolatedOwnerManager, SignatureDecod
                 }
                 /* solhint-enable no-inline-assembly */
                 // NOTE: The following line is copied from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839` to `safe-global/safe-contracts`; this differs from the `safe-contracts` commit from which this repository has been forked (`ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`), in which a legacy implementation of EIP-1271 is used
-                require(ISignatureValidator(currentOwner).isValidSignature(dataHash, contractSignature) == EIP1271_MAGIC_VALUE, "GS024");
+                require(IStandardSignatureValidator(currentOwner).isValidSignature(dataHash, contractSignature) == EIP1271_MAGIC_VALUE, "GS024");
             } else if (v > 30) {
                 // If v > 30 then default va (27,28) has been adjusted for eth_sign flow
                 // To support eth_sign and similar we adjust v and hash the messageHash with the Ethereum message prefix before applying ecrecover
