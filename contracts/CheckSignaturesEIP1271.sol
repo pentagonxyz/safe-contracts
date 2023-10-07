@@ -14,6 +14,10 @@ import "./external/SafeMath.sol";
 abstract contract CheckSignaturesEIP1271 is IsolatedOwnerManager, SignatureDecoder {
     using SafeMath for uint256;
 
+    // bytes4(keccak256("isValidSignature(bytes32,bytes)")
+    // NOTE: The following line is copied from the newer commit `1cfa95710057e33832600e6b9ad5ececca8f7839` to `safe-global/safe-contracts`; this differs from the `safe-contracts` commit from which this repository has been forked (`ad9b3190d4889abeeaa02c5c05138d9c327f2460`, which contains the same contracts as `v1.4.0`), in which a legacy implementation of EIP-1271 is used
+    bytes4 internal constant EIP1271_MAGIC_VALUE = 0x1626ba7e;
+
     // This constructor ensures that this contract can only be used as a singleton for proxy contracts
     constructor() {
         /**
